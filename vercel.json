@@ -1,9 +1,11 @@
 {
     "version": 2,
-    "builds": [
-        { "src": "server.js", "use": "@vercel/node" },
-        { "src": "public/index.html", "use": "@vercel/static" }
-    ],
+    "functions": {
+        "server.js": {
+            "runtime": "nodejs22.x",
+            "type": "server"
+        }  
+    },
     "routes": [
         { "src": "/(.*)", "dest": "server.js" }
     ]

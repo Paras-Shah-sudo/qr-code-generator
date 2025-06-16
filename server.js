@@ -1,19 +1,15 @@
 import express from "express";
-import path from "path";
+import { dirname } from "path";
 import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-app.use(express.static(path.join(__dirname, "public")))
+const port = 3000;
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/index.html"));
+    res.sendFile(__dirname + "/public/index.html");
 })
 
-// app.listen(port, () => {
-//     console.log(`Server is listening on port ${port}`);
-// });
-
-export default app;
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+});

@@ -44,8 +44,12 @@
 
             h1 {
                 font-size: 24px;
-                margin-bottom: 10px;
                 text-align: center;
+            }
+            
+            p {
+                text-align: justify;
+                margin: 0;
             }
 
             .input-group {
@@ -101,6 +105,7 @@
             
             @media (max-width: 480px) {
                 .input-group { width: 80%; }
+                p { width: 80%; }
             }
         </style>
     </head>
@@ -109,16 +114,56 @@
             <div class="container">
                 <div class="content">
                     <h1>QR Code Generator</h1>
+                    <p>This website allows you to generate a QR Code for a given text 
+                        or website URL that you can download and share with people. 
+                        Its built on an Express.js server hosted on Vercel and uses 
+                        an NPM library to generate the QR code.
+                    </p>
                     <div class="input-group">
-                        <input type="text" id="qr-input" placeholder="Enter URL" required />
-                        <button>Go</button>
+                        <input type="text" id="qr-input" placeholder="Enter text or URL" />
+                        <button onclick="generateQR()">Go</button>
                     </div>
                     <div id="qr-box">
-                        <img id="qr-img" src="" alt="QR Code" />
+                        <img id="qr-img" src="" width="200" height="200" alt="QR Code" />
                     </div>
                     <a href="#" id="download-btn" download="qrcode.png">Download</a>
                 </div>
             </div>
         </div>
+        
+        <script>
+            function generateQR() {
+                const input = document.getElementById('qr-input').value.trim();
+                if(!input) return;
+                
+                const qrImage = document.getElementById('qr-img');
+                const qrBox = document.getElementById('qr-box');
+                const downloadBtn = document.getElementById('download-btn');
+                
+                const qrUrl = `/generate?url=${encodeURIComponent(input)}`;
+                qrImage.src = qrUrl;
+                qrBox.style.visibility = "visible";
+                downloadBtn.href = qrUrl;
+                downloadBtn.style.visibility = "visible";
+            }
+            
+            function checkChanges() {
+                const inputTextBox = document.getElementById('qr-input');
+                const qrImage = document.getElementById('qr-img');
+                const qrBox = document.getElementById('qr-box');
+                const downloadBtn = document.getElementById('download-btn');
+                
+                inputTextBox.oninput = function () {
+                    const qrUrl = qrImage.src;
+                    if(qrUrl) {
+                        qrImage.src = "";
+                        qrBox.style.visibility = "hidden";
+                        downloadBtn.href = "";
+                        downloadBtn.style.visibility = "hidden";
+                    }
+                }
+            }
+            checkChanges();
+        </script>
     </body>
 </html>
